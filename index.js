@@ -1,7 +1,6 @@
 import express, { json } from "express";
 import cors from "cors";
 import { config } from "dotenv";
-import fs from 'fs';
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
@@ -9,10 +8,6 @@ import blogRoutes from "./routes/blogRoutes.js";
 
 config();
 connectDB();
-
-if (!fs.existsSync('uploads')) {
-  fs.mkdirSync('uploads');
-}
 
 const app = express();
 app.use(json());
