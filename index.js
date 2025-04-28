@@ -10,17 +10,16 @@ import blogRoutes from "./routes/blogRoutes.js";
 config();
 connectDB();
 
-const app = express();
-app.use(json());
-app.use(cors({
-  origin: ["https://mini-blog-frontend-six.vercel.app"],
-    methods: ["GET", "POST"],
-}));
-
-
 if (!fs.existsSync('uploads')) {
   fs.mkdirSync('uploads');
 }
+
+const app = express();
+app.use(json());
+app.use(cors({
+  origin: "https://mini-blog-frontend-six.vercel.app",
+    methods: ["GET", "POST"],
+}));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/category", categoryRoutes);
