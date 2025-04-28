@@ -12,7 +12,9 @@ connectDB();
 
 const app = express();
 app.use(json());
-app.use(cors());
+app.use(cors({
+  origin: 'https://mini-blog-frontend-six.vercel.app'
+}));
 
 
 if (!fs.existsSync('uploads')) {
