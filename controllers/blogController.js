@@ -3,8 +3,8 @@ import { uploadImageToCloudinary } from "../utils/cloudinaryUploader.js";
 
 const uploadImage = async (file) => {
   try {
-    const filePath = file.path;
-    const uploadResult = await uploadImageToCloudinary(filePath, 'Blog');
+    const fileBuffer = file.buffer;
+    const uploadResult = await uploadImageToCloudinary(fileBuffer, 'Blog');
     return uploadResult;
   } catch (error) {
     console.error('Image upload failed:', error);

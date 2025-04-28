@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
-import fs from 'fs';
+import streamifier from 'streamifier';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -7,14 +7,24 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-export const uploadImageToCloudinary = async (filePath, folderName = 'uploads') => {
+export const uploadImageToCloudinary = async (fileBuffer, folderName = 'uploads') => {
   try {
-    const result = await cloudinary.uploader.upload(filePath, {
-      filePath,
-      public_id: `${folderName}/${Date.now()}`
-    });
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: folderName,
+        },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      );
 
-    fs.unlinkSync(filePath);
+      streamifier.createReadStream(fileBuffer).pipe(uploadStream);
+    });
 
     return {
       url: result.secure_url,
